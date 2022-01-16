@@ -40,3 +40,4 @@ out/
 /mysql-data
 /redis-data
 /redis.conf
+.env

@@ -16,8 +16,13 @@ services:
     image: ghcr.io/modulariz/h2o-hydroponics2orchestrate:main
     environment:
       SPRING_PROFILES_ACTIVE: prod
+      SSL_ENABLED: ${SSL_ENABLED}
+      KEY_STORE: ${KEY_STORE}
+      KEY_STORE_PASSWORD: ${KEY_STORE_PASSWORD}
+      KEY_ALIAS: ${KEY_ALIAS}
+      PORT: ${PORT}
     ports:
-      - '80:80'
+      - '${PORT}:${PORT}'
     depends_on:
       mysql:
         condition: service_healthy
