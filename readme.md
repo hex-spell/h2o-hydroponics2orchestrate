@@ -1,4 +1,4 @@
-# Hydroponics 2 Operate (WIP)
+# Hydroponics 2 Orchestrate (WIP)
 Operations server for Hydroponic installations, real time sensor data relay with scheduled persistence for graph visualizations
 
 # Info
