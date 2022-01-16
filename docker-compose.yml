@@ -17,7 +17,6 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: prod
       SSL_ENABLED: ${SSL_ENABLED}
-      KEY_STORE: ${KEY_STORE}
       KEY_STORE_PASSWORD: ${KEY_STORE_PASSWORD}
       KEY_ALIAS: ${KEY_ALIAS}
       PORT: ${PORT}
@@ -28,6 +27,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    volumes:
+      - ${KEY_STORE}:/keystore.p12
   mysql:
     image: mysql:5.7
     environment:
