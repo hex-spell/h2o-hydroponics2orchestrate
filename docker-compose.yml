@@ -3,8 +3,21 @@ version: '2.1'
 services:
   h2o_hydroponics:
     image: h2o_hydroponics:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: dockerized
     ports:
       - '8080:8080'
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  h2o_hydroponics_published:
+    image: ghcr.io/modulariz/h2o-hydroponics2orchestrate:main
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - '80:80'
     depends_on:
       mysql:
         condition: service_healthy
