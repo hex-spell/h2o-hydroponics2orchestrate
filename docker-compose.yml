@@ -1,11 +1,23 @@
-version: '2'
+version: '2.1'
 
 services:
-
+  h2o_hydroponics:
+    image: h2o_hydroponics:latest
+    ports:
+      - '8080:8080'
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
   mysql:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: docker
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+      timeout: 3s
+      retries: 10
     ports:
       - '3306:3306'
     volumes:
@@ -14,6 +26,8 @@ services:
   redis:
     image: "redis:alpine"
     command: redis-server
+    healthcheck:
+      test: redis-cli ping
     ports:
       - "6379:6379"
     volumes:
