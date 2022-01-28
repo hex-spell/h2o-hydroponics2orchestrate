@@ -52,3 +52,10 @@ services:
     volumes:
       - ./redis-data:/var/lib/redis
       - ./redis.conf:/usr/local/etc/redis/redis.conf
+  phpmyadmin:
+    image: "phpmyadmin"
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      - PMA_ARBITRARY=1

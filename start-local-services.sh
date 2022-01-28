@@ -1,1 +1,1 @@
-sudo docker-compose up -d mysql redis
+sudo docker-compose up -d mysql redis phpmyadmin

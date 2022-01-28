@@ -1,1 +1,1 @@
-sudo docker-compose up mysql redis h2o_hydroponics
+sudo docker-compose up mysql redis h2o_hydroponics phpmyadmin

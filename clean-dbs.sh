@@ -1,0 +1,1 @@
+sudo rm -rf mysql-data redis.conf redis-data
