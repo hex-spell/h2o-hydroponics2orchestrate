@@ -7,10 +7,21 @@ services:
       SPRING_PROFILES_ACTIVE: dockerized
     ports:
       - '8080:8080'
+    healthcheck:
+      test: curl -m 5 --silent --fail --request GET http://localhost:8080/actuator/health | jq --exit-status -n 'inputs | if has("status") then .status=="UP" else false end' > /dev/null || exit 1
+      timeout: 3s
+      retries: 10
     depends_on:
       mysql:
         condition: service_healthy
       redis:
+        condition: service_healthy
+  sensor_randomizer:
+    image: ghcr.io/modulariz/sensor-data-randomizer:main
+    environment:
+      WEBSOCKETS_ENDPOINT: ws://localhost:8080/ws
+    depends_on:
+      h2o_hydroponics:
         condition: service_healthy
   h2o_hydroponics_published:
     image: ghcr.io/modulariz/h2o-hydroponics2orchestrate:main
@@ -22,6 +33,10 @@ services:
       PORT: ${PORT}
     ports:
       - '${PORT}:${PORT}'
+    healthcheck:
+      test: curl -m 5 --silent --fail --request GET http://localhost:${PORT}/actuator/health | jq --exit-status -n 'inputs | if has("status") then .status=="UP" else false end' > /dev/null || exit 1
+      timeout: 3s
+      retries: 10
     depends_on:
       mysql:
         condition: service_healthy
@@ -29,6 +44,13 @@ services:
         condition: service_healthy
     volumes:
       - ${KEY_STORE}:/keystore.p12
+  sensor_randomizer_published:
+    image: ghcr.io/modulariz/sensor-data-randomizer:main
+    environment:
+      WEBSOCKETS_ENDPOINT: wss://modularizar.com/ws
+    depends_on:
+      h2o_hydroponics_published:
+        condition: service_healthy
   mysql:
     image: mysql:5.7
     environment:
@@ -56,6 +78,6 @@ services:
     image: "phpmyadmin"
     restart: always
     ports:
-      - 8081:80
+      - '8081:80'
     environment:
       - PMA_ARBITRARY=1
