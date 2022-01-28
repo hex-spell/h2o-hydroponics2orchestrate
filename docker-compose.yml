@@ -34,7 +34,7 @@ services:
     ports:
       - '${PORT}:${PORT}'
     healthcheck:
-      test: curl -m 5 --silent --fail --request GET http://localhost:${PORT}/actuator/health | jq --exit-status -n 'inputs | if has("status") then .status=="UP" else false end' > /dev/null || exit 1
+      test: curl -m 5 --silent --fail --request GET https://modularizar.com/actuator/health | jq --exit-status -n 'inputs | if has("status") then .status=="UP" else false end' > /dev/null || exit 1
       timeout: 3s
       retries: 10
     depends_on:
