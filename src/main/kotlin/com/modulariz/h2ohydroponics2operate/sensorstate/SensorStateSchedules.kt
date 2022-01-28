@@ -16,7 +16,7 @@ class SensorStateSchedules {
     @Autowired
     lateinit var sensorStateCacheRepository: SensorStateCacheRepository
 
-    @Scheduled(cron = "0 0 * * * ?")
+    @Scheduled(cron = "1/3 * * * * ?")
     fun saveHourlyState() {
         val lastSensorStateData = sensorStateCacheRepository.findById("SensorState")
         val previousSensorStateData = sensorStateCacheRepository.findById("PreviousSensorState")
